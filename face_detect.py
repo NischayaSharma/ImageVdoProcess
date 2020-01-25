@@ -5,7 +5,7 @@ import sys
 imagePath = sys.argv[1]
 # Cascade path, It will be a .xml file
 # Look in the folder you installed opencv
-cascPath = "/home/nischaya/OpenCV/data/haarcascades/haarcascade_frontalface_default.xml"
+cascPath = "haarcascade_frontalface_default.xml"
 face_cascade = cv2.CascadeClassifier(cascPath)
 
 # reading the Image
