@@ -1,10 +1,32 @@
+import sqlite3
+from sqlite3 import Error
 
 # Creating database 
 # It captures images and stores them in datasets  
 # folder under the folder name of sub_data 
 import cv2, sys, numpy, os 
 haar_file = 'haarcascade_frontalface_default.xml'
-  
+
+
+def create_connection(db_file):
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        print(sqlite3.version)
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+
+def create_table(conn, create_table_sql):
+    try:
+        c = conn.cursor()
+        c.execute(create_table_sql)
+    except Error as e:
+        print(e)
+
 # All the faces data will be 
 #  present this folder 
 datasets = 'datasets'  
@@ -29,6 +51,12 @@ face_cascade = cv2.CascadeClassifier(haar_file)
 webcam = cv2.VideoCapture(0)  
   
 # The program loops until it has 30 images of the face. 
+arr = []
+sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS datasets (
+                                        id integer PRIMARY KEY,
+                                        name text NOT NULL
+                                    ); """
+ 
 count = 1
 while count < 30:  
     (_, im) = webcam.read() 
@@ -38,11 +66,10 @@ while count < 30:
         cv2.rectangle(im, (x, y), (x + w, y + h), (255, 0, 0), 2) 
         face = gray[y:y + h, x:x + w] 
         face_resize = cv2.resize(face, (width, height)) 
+        arr.append(face_resize)
         cv2.imwrite('% s/% s.png' % (path, count), face_resize) 
     count += 1
-      
     cv2.imshow('OpenCV', im) 
     key = cv2.waitKey(10) 
     if key == 27: 
         break
- 

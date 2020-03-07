@@ -14,7 +14,7 @@ cannyLow = cv2.Canny(image, 10,30)
 #  Hight Threshold (50,150)
 cannyHigh = cv2.Canny(image, 250,250)
 
-#  Object Counting from the above detected edges
+# Object Counting from the above detected edges
 # The first option is the output of the canny edge detector. 
 # RETR_EXTERNAL tells OpenCv to only find the outermost edges (as you can find contours within contours)
 # The second arguments tells OpenCv to use the simple approximation
